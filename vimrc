@@ -1,55 +1,101 @@
-set nocompatible
-set enc=utf-8
-set t_Co=256 " use 256 colours in terminal vim 
-filetype off
-" needs curl
-set rtp+=~/.vim/bundle/vundle/ 
-call vundle#rc()
+" General
+  set nocompatible
+  set t_Co=256 " use 256 colours in terminal vim 
+  set enc=utf-8
 
-"Bundles:
+  " Match and search
+  set hlsearch      " highlight search terms
+  set incsearch     " show search matches as you type
+  " Visual Cues
+  "set lines=80 " 80 lines tall
+  "set columns=160 " 160 cols wide
+  set statusline=%F%m%r%h%w\ format:%{&ff}\ type:%Y\ pos:%04l,%04v\ %p%%\ len=%L
+  set laststatus=2 " always show the status line
+  set showmatch     " shows matching parenthesis
+  "set listchars=nbsp:¬,tab:>-,trail:·
+  set listchars=tab:▸\ ,eol:¬,extends:»,precedes:«
+  set ruler " show current positions along the bottom
 
-" original repos on github
-Bundle 'tpope/vim-fugitive'
-Bundle 'majutsushi/tagbar'
-Bundle 'reinh/vim-makegreen'
-Bundle 'Twinside/vim-haskellConceal'
+  " Sudo write
+  comm! W exec 'w !sudo tee % > /dev/null' | e!
+  let mapleader = ","
 
-" vim-scripts repos
-Bundle 'L9'
-Bundle 'gundo'
-Bundle 'FuzzyFinder'
-Bundle 'ack.vim'
-" Bundle 'git.vim'
-Bundle 'openssl.vim'
-Bundle 'Rainbow-Parenthsis-Bundle'
-Bundle 'Source-Explorer-srcexpl.vim'
-Bundle 'project.tar.gz'
-Bundle 'taglist.vim'
-Bundle 'vimwiki'
-" colorschemes
-Bundle 'Mustang2'
-Bundle 'vibrantink'
-"Bundle 'summerfruit'
-"Make gvim-only colorschemes work transparently in terminal vim 
-Bundle 'CSApprox'
-Bundle 'bclear'
-Bundle 'glsl.vim'
+  syntax on
+  set expandtab " indent with spaces, not tab
+  set hidden
 
-
-" non github repos
-Bundle 'git://git.wincent.com/command-t.git'
-
-" ...
 filetype plugin indent on
 
-nnoremap <F5> :GundoToggle<CR>
+" Plugins:
+  " needs curl
+  set runtimepath+=~/.vim/bundle/vundle/ 
+  call vundle#rc()
 
-let mapleader = ","
+  Bundle 'gmarik/vundle'
 
-syntax on
-set expandtab " indent with spaces, not tab
+  " original repos on github
+  Bundle 'tpope/vim-fugitive'
+  Bundle 'majutsushi/tagbar'
+  Bundle 'reinh/vim-makegreen'
+  Bundle 'Twinside/vim-haskellConceal'
+  Bundle 'Conque-Shell'
+  "Bundle 'LustyJuggler'
 
-set hidden
+  " vim-scripts repos
+  Bundle 'L9'
+  Bundle 'FuzzyFinder'
+
+  Bundle 'gundo'
+  nnoremap <F5> :GundoToggle<CR>
+
+  Bundle 'scrooloose/syntastic'
+
+  " Bundle 'ack.vim'
+  " Bundle 'git.vim'
+  Bundle 'openssl.vim'
+  Bundle 'Rainbow-Parenthsis-Bundle'
+  Bundle 'Source-Explorer-srcexpl.vim'
+  Bundle 'project.tar.gz'
+  Bundle 'taglist.vim'
+
+  " vimwiki " {{{
+  Bundle 'vimwiki'
+  " vimwiki
+  "let g:vimwiki_list = [{'path': '~/vimwiki/', 'auto_export': 1}]
+  "let g:vimwiki_list = [{'path_html': '~/vimwiki_html/', 'auto_export': 1}]
+  let wiki = {}
+  let wiki.path = '~/Dropbox/vimwiki/'
+  let wiki.path_html = '~/vimwiki_html/'
+  let wiki.nested_syntaxes = {'python': 'python', 'c++': 'cpp', 'haskell': 'haskell'}
+  let wiki.auto_export = 1
+  let wiki.html_footer = '~/vimwiki_html/footer.tpl'
+  let g:vimwiki_list = [wiki]
+  let g:vimwiki_browsers=['/usr/bin/google-chrome']
+  " " }}}
+
+  " colorschemes
+  Bundle 'Mustang2'
+  Bundle 'vibrantink'
+  "Bundle 'summerfruit'
+  Bundle 'summerfruit256.vim'
+
+  "Make gvim-only colorschemes work transparently in terminal vim 
+  Bundle 'CSApprox'
+  Bundle 'bclear'
+  Bundle 'glsl.vim'
+  Bundle 'tslime.vim'
+  Bundle 'Zenburn'
+  Bundle 'Solarized'
+
+
+  " Ack
+  Bundle 'kronn/ack.vim'
+  let g:ackprg="ack-grep -H --nocolor --nogroup --column"
+
+  " non github repos
+  Bundle 'git://git.wincent.com/command-t.git'
+
+  let NERDTreeIgnore=['\.vim$', '\~$', '\.o$']
 
 " see: https://bugs.launchpad.net/ubuntu/+source/vim-latexsuite/+bug/137205
 set runtimepath+=/usr/share/vim/addons
@@ -60,47 +106,36 @@ set undolevels=1000      " use many muchos levels of undo
 set noerrorbells " don't make noise
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Visual Cues
-"
-"set lines=80 " 80 lines tall
-"set columns=160 " 160 cols wide
-set statusline=%F%m%r%h%w\ format:%{&ff}\ type:%Y\ pos:%04l,%04v\ %p%%\ len=%L
-set laststatus=2 " always show the status line
-set showmatch     " shows matching parenthesis
-set hlsearch      " highlight search terms
-set incsearch     " show search matches as you type
-"set listchars=nbsp:¬,tab:>-,trail:·
-set listchars=tab:▸\ ,eol:¬,extends:»,precedes:«
-set ruler " show current positions along the bottom
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Text Formatting/Layout
 "
-set si
-set cindent
-set shiftwidth=2 " number of spaces to use for autoindenting
-set tabstop=2
-set softtabstop=2
-"set number        " show line numbers
+  set si
+  set cindent
+  set shiftwidth=2 " number of spaces to use for autoindenting
+  set tabstop=2
+  set softtabstop=2
 
-set fo=tcrqn " See Help (complex)
-"set ai " autoindent
-set si " smartindent 
-set cindent " do c-style indenting
+  set fo=tcrqn " See Help (complex)
+  "set ai " autoindent
+  set si " smartindent 
+  set cindent " do c-style indenting
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+  set colorcolumn=81
+"
 " Folding
 "
-set foldenable
-set foldmethod=indent
-set foldopen-=search " don't open folds when you search into them
-set foldopen-=undo " don't open folds when you undo stuff
+  set foldenable
+  set foldmethod=indent
+  set foldopen-=search " don't open folds when you search into them
+  set foldopen-=undo " don't open folds when you undo stuff
 
-filetype plugin on
+  filetype plugin on
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Latex and latex-suite
 "
+" IMPORTANT: grep will sometimes skip displaying the file name if you
+" search in a singe file. This will confuse latex-suite. Set your grep
+" program to alway generate a file-name.
 set grepprg=grep\ -nH\ $*
 filetype indent on " enables automatic indentation as you type.
 let g:tex_flavor='latex'
@@ -113,11 +148,6 @@ augroup filetypedetect
   au! BufRead,BufNewFile *.bib		setfiletype tex "bib_latexSuite
 augroup END
 
-" IMPORTANT: grep will sometimes skip displaying the file name if you
-" search in a singe file. This will confuse latex-suite. Set your grep
-" program to alway generate a file-name.
-set grepprg=grep\ -nH\ $*
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " C/C++
 "
@@ -125,24 +155,30 @@ autocmd FileType *.c set foldmethod=indent
 autocmd FileType *.cpp set foldmethod=indent
 autocmd FileType cpp map <F5> <ESC>:wa<CR>:make<CR>
 autocmd FileType cpp map <F7> :cex system("cppcheck --template gcc --enable=all " . shellescape(expand('%')))<CR>
+autocmd FileType cpp map <F5> <ESC>:wa<CR>:make<CR>
 
 if getline(1) =~ '-*-c++-*-'
   set filetype=cpp
 endif
 set tags=~/tags
 
-set winminheight=0 " minimal height of windows
-
-let NERDTreeIgnore=['\.vim$', '\~$', '\.o$']
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Haskell
+"
+"autocmd BufWritePost *.hs !ghc -c %
 
 "autocmd FileType haskell nmap <C-c><C-l> :GhciRange<CR>
 "autocmd FileType haskell vmap <C-c><C-l> :GhciRange<CR>
 "autocmd FileType haskell nmap <C-c><C-f> :GhciFile<CR>
 "autocmd FileType haskell nmap <C-c><C-r> :GhciReload<CR>
 
-autocmd FileType cpp map <F5> <ESC>:wa<CR>:make<CR>
-
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" glsl
+"
+autocmd FileType *.glsl setfiletype glsl
 autocmd BufNewFile,BufRead *.frag,*.vert,*.fp,*.vp,*.glsl,*.glslf,*.glslv setf glsl
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 autocmd BufNewFile,BufRead *.tmux setf tmux
 autocmd bufwritepost .vimrc source $MYVIMRC
@@ -150,12 +186,19 @@ nmap <silent> <leader>s :set spell!<CR>
 set spelllang=en_us
 runtime! ftplugin/man.vim
 
+set winminheight=0 " minimal height of windows
+
 if &t_Co >= 256 || has("gui_running")
-  "colorscheme mustang
-  "colorscheme summerfruit
+  "colorscheme summerfruit256
   colorscheme Mustang
   "colorscheme vibrantink
   "colorscheme bclear
+  "set background=dark
+  "let g:solarized_termtrans=1
+  "let g:solarized_termcolors=256
+  "let g:solarized_contrast="high"
+  "let g:solarized_visibility="high"
+  "colorscheme solarized
 
   "remove scroolbars and toolbar
   set guioptions-=T
@@ -210,9 +253,10 @@ set statusline+=%*
 
 set statusline+=%{StatuslineTrailingSpaceWarning()}
 
+" syntastic
 set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}
-"set statusline+=%*
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
 "display a warning if &paste is set
 set statusline+=%#error#
@@ -326,19 +370,6 @@ function! s:Median(nums)
     endif
 endfunction
 
-" vimwiki
-"let g:vimwiki_list = [{'path': '~/vimwiki/', 'auto_export': 1}]
-"let g:vimwiki_list = [{'path_html': '~/vimwiki_html/', 'auto_export': 1}]
-let wiki = {}
-let wiki.path = '~/Dropbox/vimwiki/'
-let wiki.path_html = '~/vimwiki_html/'
-let wiki.nested_syntaxes = {'python': 'python', 'c++': 'cpp', 'haskell': 'haskell'}
-let wiki.auto_export = 1
-let wiki.html_footer = '~/vimwiki_html/footer.tpl'
-let g:vimwiki_list = [wiki]
-let g:vimwiki_browsers=['/usr/bin/google-chrome']
-
-let g:ackprg="ack-grep -H --nocolor --nogroup --column"
 " execute tests
 map <leader>dt :set makeprg=make\ test\|:call MakeGreen()<CR>
 "map <leader>dt :set makeprg=!runhaskell\ test.hs\|:call MakeGreen()<CR>
